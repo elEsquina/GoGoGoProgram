@@ -6,14 +6,14 @@ import (
 )
 
 type Vector struct {
-	Coords []float64
+	coords []float64
 	dim int
 }
 
 func NewVector(coords ...float64) Vector {
 	return Vector{
 		coords: coords,
-		dim:    len(coords),
+		dim: len(coords),
 	}
 }
 
@@ -21,7 +21,7 @@ func (v *Vector) Copy() Vector{
 	return NewVector(v.coords...) 
 }
 
-func (v *Vector) Add(other *Vector) error {
+func (v *Vector) Add(other Vector) error {
 	if v.dim != other.dim {
 		return errors.New("dimension mismatch")
 	}
@@ -32,7 +32,7 @@ func (v *Vector) Add(other *Vector) error {
 	return nil
 }
 
-func (v *Vector) Sub(other *Vector) error {
+func (v *Vector) Sub(other Vector) error {
 	if v.dim != other.dim {
 		return errors.New("dimension mismatch")
 	}
@@ -43,7 +43,7 @@ func (v *Vector) Sub(other *Vector) error {
 	return nil
 }
 
-func (v *Vector) Dot(other *Vector) (float64, error) {
+func (v *Vector) Dot(other Vector) (float64, error) {
 	if v.dim != other.dim {
 		return 0, errors.New("dimension mismatch")
 	}

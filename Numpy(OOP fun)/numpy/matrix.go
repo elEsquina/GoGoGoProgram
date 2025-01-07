@@ -9,9 +9,9 @@ import (
 var eps float64 = 1e-9
 
 type Matrix struct {
-	Coords [][]float64
-	Rows int
-	Cols int
+	coords [][]float64
+	rows int
+	cols int
 }
 
 func Zeros(rows, cols int) Matrix {

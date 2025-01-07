@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	v1 := numpy.NewVector(1, 2, 3)
-	v2 := numpy.NewVector(4, 5, 6)
+	v1 := numpy.NewVector(1.1, 2.0, 3.0)
+	v2 := numpy.NewVector(4.0, 5.0, 6.0)
 	fmt.Println(v1.String())
 	fmt.Println(v2.String())
 	v1.Add(v2)
