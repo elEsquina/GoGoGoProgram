@@ -70,7 +70,7 @@ func NewMatrix(coords [][]float64) (Matrix, error) {
 	return Matrix{coords: coords, rows: rows, cols: cols}, nil
 }
 
-func (m *Matrix) Add(other *Matrix) error {
+func (m *Matrix) Add(other Matrix) error {
 	if m.rows != other.rows || m.cols != other.cols {
 		return errors.New("dimension mismatch")
 	}
@@ -82,7 +82,7 @@ func (m *Matrix) Add(other *Matrix) error {
 	return nil
 }
 
-func (m *Matrix) Sub(other *Matrix) error {
+func (m *Matrix) Sub(other Matrix) error {
 	if m.rows != other.rows || m.cols != other.cols {
 		return errors.New("dimension mismatch")
 	}
@@ -94,7 +94,7 @@ func (m *Matrix) Sub(other *Matrix) error {
 	return nil
 }
 
-func (m *Matrix) Mul(other *Matrix) error {
+func (m *Matrix) Mul(other Matrix) error {
 	if m.cols != other.rows {
 		return errors.New("dimension mismatch")
 	}
