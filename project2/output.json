@@ -1,1 +1,13 @@
-{"Average Age":29.6,"Average Salary":60100,"Counts By Education":{"Bachelor's":9,"Master's":7,"PhD":4},"Highest Salary person name":["Judy","Ivan"],"Lowest Salary person name":["Mallory","David","Zara"],"Oldest person name":["Judy","Ivan"],"Youngest person name":["Bob","Mallory","David","Zara"]}
+{
+    "Average Age":29.6,
+    "Average Salary":60100,
+    "Counts By Education": {
+        "Bachelor's":9,
+        "Master's":7,
+        "PhD":4
+    },
+    "Highest Salary person name": ["Judy","Ivan"],
+    "Lowest Salary person name":["Mallory","David","Zara"],
+    "Oldest person name":["Judy","Ivan"],
+    "Youngest person name":["Bob","Mallory","David","Zara"]
+}

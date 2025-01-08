@@ -14,7 +14,7 @@ func main() {
 	numbers = append(numbers, 5)
 	numbers = append(numbers, -1)
 
-	next_ := utils.Iterator(numbers) 
+	next_ := utils.Iterator[int](numbers) 
 	for {
 		num, err := next_()
 		if !err {

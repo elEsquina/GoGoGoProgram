@@ -1,1 +1,1 @@
-# GoGoGoProgram
+# GoLang
