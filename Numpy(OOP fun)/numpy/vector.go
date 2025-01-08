@@ -5,12 +5,6 @@ import (
 	"fmt"
 )
 
-type SpaceElement interface {
-	Add(other SpaceElement) error
-	Sub(other SpaceElement) error
-	Dot(other SpaceElement) (float64, error)
-}
-
 type Vector struct {
 	coords []float64
 	dim int
