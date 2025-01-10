@@ -45,6 +45,9 @@ func main() {
 	urls := []string{
 		"https://www.google.com",
 		"https://www.linkedin.com",
+		"https://www.linkedin.com",
+		"https://github.com/m-elhamlaoui/refactoring-24-younessothmane/commits/main/",
+		"https://www.linkedin.com",
 	}
 
 	cont, cancel := context.WithTimeout(context.Background(), 3*time.Second)
