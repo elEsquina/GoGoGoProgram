@@ -10,7 +10,7 @@ import (
 )
 
 func getAuthorRepoFromFactory(w http.ResponseWriter, r *http.Request) (data.IDAO[data.Author], error) {
-	store, ok := r.Context().Value("memoryStore").(*data.InMemoryStore)
+	store, ok := r.Context().Value("memoryStore").(*data.DBTemplate)
 	if !ok || store == nil {
 		http.Error(w, "Store not found in context", http.StatusInternalServerError)
 		return nil, errors.New("store not found in context")

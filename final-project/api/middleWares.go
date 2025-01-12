@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"finalproject/data"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -16,7 +15,6 @@ import (
 var tokenStore []string
 
 func BooksRouter(w http.ResponseWriter, r *http.Request){
-	fmt.Println(r.Context().Value("store"))
 	if r.Method == http.MethodGet {
 		GetAllBooks(w, r)
 	} else if r.Method == http.MethodPost {
@@ -72,7 +70,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func Authenticate(next http.HandlerFunc) http.HandlerFunc {
+func Authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header.Get("Authorization") == "" {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -114,7 +112,7 @@ func RequestLogger(next http.Handler) http.Handler {
 	})
 }
 
-func ContextGeneration(store *data.InMemoryStore, next http.Handler) http.Handler {
+func ContextGeneration(store *data.DBTemplate, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 		defer cancel()

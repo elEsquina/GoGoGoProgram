@@ -1,43 +1,89 @@
 package main
 
 import (
-	"net/http"
-	"finalproject/data"
+	"context"
 	"finalproject/api"
+	"finalproject/data"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
-// Saving, Greaceful Shutdown, and Readme, Saving from update and create and delete, postgres
+/* 
+TODO: 
+	Postgres SQL: Done
+	Greaceful shutdown: Done
+	Logging: Done
+	Authentication: Done
+	Testing: Done
+	Docker Container: Not Done
+*/
 
 func main() {
-	store := data.NewInMemoryStore()
-	//http.Handle("/login", http.HandlerFunc(api.Login))
+	template := data.NewDBTemplate("postgres://postgres:root@localhost:5432/finalproject?sslmode=disable")
 
-	go data.StartReportGenerator(store)
+	go data.StartReportGenerator(template)
 
-	http.Handle("/books", 
+	http.Handle("/login", api.RequestLogger( http.HandlerFunc(api.Login) ) )
+
+	http.Handle("/books",
 		api.RequestLogger(
-			api.ContextGeneration(store, http.HandlerFunc(api.BooksRouter)),
+			api.Authenticate(
+				api.ContextGeneration(template, http.HandlerFunc(api.BooksRouter)),
+			),
 		),
 	)
 
-	http.Handle("/books/{id}", 
+	http.Handle("/books/{id}",
 		api.RequestLogger(
-			api.ContextGeneration(store, http.HandlerFunc(api.BooksPathParamRouter)),
+			api.Authenticate(
+				api.ContextGeneration(template, http.HandlerFunc(api.BooksPathParamRouter)),
+			),
 		),
 	)
 
-	http.Handle("/authors", 
+	http.Handle("/authors",
 		api.RequestLogger(
-			api.ContextGeneration(store, http.HandlerFunc(api.AuthorsRouter)),
+			api.Authenticate(
+				api.ContextGeneration(template, http.HandlerFunc(api.AuthorsRouter)),
+			),
 		),
 	)
 
-	http.Handle("/authors/{id}", 
+	http.Handle("/authors/{id}",
 		api.RequestLogger(
-			api.ContextGeneration(store, http.HandlerFunc(api.AuthorsPathParamRouter)),
+			api.Authenticate(
+				api.ContextGeneration(template, http.HandlerFunc(api.AuthorsPathParamRouter)),
+			),
 		),
 	)
 
-	http.ListenAndServe(":8080", nil)
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: nil, 
+	}
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+
+	go func() {
+		log.Println("Server is starting on :8080")
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Server failed: %v", err)
+		}
+	}()
+
+	<-stop
+	log.Println("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced to shutdown: %v", err)
+	}
+
+	log.Println("Server exited gracefully")
 }
-

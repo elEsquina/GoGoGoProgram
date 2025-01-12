@@ -10,7 +10,7 @@ import (
 )
 
 func getBookRepoFromFactory(w http.ResponseWriter, r *http.Request) (data.IDAO[data.Book], error) {
-	store, ok := r.Context().Value("memoryStore").(*data.InMemoryStore)
+	store, ok := r.Context().Value("memoryStore").(*data.DBTemplate)
 	if !ok || store == nil {
 		http.Error(w, "Store not found in context", http.StatusInternalServerError)
 		return nil, errors.New("store not found in context")
@@ -32,7 +32,7 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 
 	books, err := repo.GetAll()
 	if err != nil {
-		http.Error(w, "Failed to retrieve books", http.StatusInternalServerError)
+		http.Error(w, "Failed to retrieve books" + err.Error(), http.StatusInternalServerError)
 		return
 	}
 
@@ -54,7 +54,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 
 	createdBook, err := repo.Create(book)
 	if err != nil {
-		http.Error(w, "Failed to create book", http.StatusInternalServerError)
+		http.Error(w, "Failed to create book" + err.Error(), http.StatusInternalServerError)
 		return
 	}
 
