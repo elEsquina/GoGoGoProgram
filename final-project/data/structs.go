@@ -67,5 +67,11 @@ type SalesReport struct {
 }
 
 type ErrorResponse struct {
-	Error string `json:"error" db:"error"`
+	Error string `json:"error"`
+}
+
+type SearchCriteria struct {
+	Title  string `json:"title"`
+	AuthorName string `json:"author_name"`
+	Genre  string `json:"genre"`
 }

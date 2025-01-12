@@ -87,3 +87,31 @@ func (repo *BookRepository) GetAll() ([]Book, error) {
 	}
 	return books, nil
 }
+
+
+func (repo *BookRepository) GetBookBySearchCriteria(s SearchCriteria) ([]Book, error) {
+	query := `
+		SELECT b.id AS id, b.title, b.genres, b.published_at, b.price, b.stock,
+			a.id AS "author.id", a.first_name AS "author.first_name", a.last_name AS "author.last_name", a.bio AS "author.bio"
+		FROM books b
+		JOIN authors a ON b.author_id = a.id
+		WHERE ($1 = '' OR b.title ILIKE $1)
+		AND ($2 = '' OR a.first_name ILIKE $2)
+		AND ($3 = '' OR b.genres ILIKE $3)
+		ORDER BY b.title
+	`
+
+	books, err := QueryStructs[Book](repo.dbTemplate, query,
+		s.Title,
+		s.AuthorName, 
+		"%" + s.Genre + "%") 
+
+
+	if err != nil {
+		return nil, err
+	}
+	for i := range books {
+		books[i].Genres = strings.Split(books[i].TextGenres, ",")
+	}
+	return books, nil
+}

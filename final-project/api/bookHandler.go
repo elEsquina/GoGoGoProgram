@@ -30,7 +30,23 @@ func GetAllBooks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	books, err := repo.GetAll()
+	title := r.URL.Query().Get("title")
+	author := r.URL.Query().Get("author")
+	genre := r.URL.Query().Get("genre")
+
+	var books []data.Book
+
+	if title != "" || author != "" || genre != "" {
+		searchCriteria := data.SearchCriteria{
+			Title: title,
+			AuthorName: author,
+			Genre: genre,
+		}
+		books, err = repo.(*data.BookRepository).GetBookBySearchCriteria(searchCriteria)
+	} else {
+		books, err = repo.GetAll()
+	}
+
 	if err != nil {
 		http.Error(w, "Failed to retrieve books" + err.Error(), http.StatusInternalServerError)
 		return
