@@ -88,6 +88,12 @@ Waits for ongoing requests to complete within a defined timeout period (5 second
 http://localhost:8080
 ```
 
+### Login 
+
+| Endpoint      | Method | Description                                                                  |
+| ------------- | ------ | ---------------------------------------------------------------------------- |
+| `/login`      | Any    | Returns an authorization token to use as header to access server ressources  |
+
 ### Books
 
 | Endpoint      | Method | Description                          |

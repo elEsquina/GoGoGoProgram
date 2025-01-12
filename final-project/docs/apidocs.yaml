@@ -6,7 +6,21 @@ info:
 servers:
   - url: http://localhost:8080
     description: Development server
+    
 paths:
+  /login:
+    get:
+      summary: Authenticates and retrieves an authorization token
+      description: Authenticates the user and returns a bearer token as a plain string.
+      responses:
+        '200':
+          description: Bearer token
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "qoihfuiqzhifqziuhgqz..."
+
   /books:
     get:
       summary: List books
